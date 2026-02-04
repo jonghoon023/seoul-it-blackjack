@@ -1,0 +1,83 @@
+<Project>
+	<PropertyGroup>
+		<Company>JongHoon</Company>
+		<Authors>JongHoon (jonghoon023@gmail.com)</Authors>
+		<Copyright>Copyright (c) $(Company). All rights reserved.</Copyright>
+		<VersionPrefix>1.0.0.0</VersionPrefix>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<PackageProjectUrl>https://github.com/jonghoon023/seoul-it-blackjack</PackageProjectUrl>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+		<PackageTags>$(Company)</PackageTags>
+		<Description></Description>
+		<RepositoryUrl>https://github.com/jonghoon023/seoul-it-blackjack.git</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<RepositoryBranch>main</RepositoryBranch>
+
+		<Deterministic>true</Deterministic>
+		<DebugSymbols>true</DebugSymbols>
+		<DebugType>portable</DebugType>
+		<IncludeSymbols>true</IncludeSymbols>
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+
+		<AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<Deterministic>true</Deterministic>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<WarningLevel>5</WarningLevel>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true' Or '$(TF_BUILD)' == 'true'">
+		<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<EnableNETAnalyzers>true</EnableNETAnalyzers>
+		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+		<AnalysisMode>All</AnalysisMode>
+		<AnalysisLevel>latest</AnalysisLevel>
+	</PropertyGroup>
+
+	<ItemDefinitionGroup>
+		<PackageReference>
+			<PrivateAssets>compile</PrivateAssets>
+		</PackageReference>
+	</ItemDefinitionGroup>
+
+	<ItemGroup Condition="$(IsPackable) == 'true'">
+		<None Include="$([MSBuild]::GetPathOfFileAbove('icon.png'))" Pack="true" Visible="false" PackagePath="\" />
+		<None Include="$([MSBuild]::GetPathOfFileAbove('README.md'))" Pack="true" Visible="false" PackagePath="\" />
+		<None Include="$([MSBuild]::GetPathOfFileAbove('LICENSE.txt'))" Pack="true" Visible="false" PackagePath="\" />
+
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0">
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+			<PrivateAssets>all</PrivateAssets>
+		</PackageReference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<AdditionalFiles Include="$([MSBuild]::GetPathOfFileAbove('stylecop.json'))" Visible="false" />
+	</ItemGroup>
+
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+		<DefineConstants>$(DefineConstants);DEBUG;TRACE</DefineConstants>
+		<Optimize>false</Optimize>
+		<NullableReferenceTypes>true</NullableReferenceTypes>
+		<TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+		<CodeAnalysisTreatWarningsAsErrors>false</CodeAnalysisTreatWarningsAsErrors>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<DefineConstants>$(DefineConstants);RELEASE</DefineConstants>
+		<Optimize>true</Optimize>
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+		<CodeAnalysisTreatWarningsAsErrors>true</CodeAnalysisTreatWarningsAsErrors>
+	</PropertyGroup>
+</Project>
