@@ -1,25 +1,24 @@
+using Seoul.It.Blackjack.Backend.Hub;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+// SignalR 서비스를 등록합니다.
+builder.Services.AddSignalR();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// 개발 환경에서만 상세 오류 페이지 사용
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseDeveloperExceptionPage();
 }
 
-app.UseHttpsRedirection();
+// 라우팅 사용
+app.UseRouting();
 
-app.UseAuthorization();
+// 엔드포인트 설정: SignalR Hub 매핑
+app.MapHub<GameHub>("/hub/blackjack");
 
-app.MapControllers();
-
+// 웹앱 실행
+Console.WriteLine("Blackjack server is running. Endpoint: /hub/blackjack");
 app.Run();
