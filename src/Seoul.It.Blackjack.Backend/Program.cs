@@ -1,4 +1,4 @@
-using Seoul.It.Blackjack.Backend.Hub;
+using Seoul.It.Blackjack.Backend.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
