@@ -8,14 +8,14 @@ namespace Seoul.It.Blackjack.TestClient;
 /// </summary>
 internal class Program
 {
+    private const string ServerUrl = "https://localhost:7057";
+
     static async Task Main()
     {
         Console.WriteLine("SignalR 테스트 클라이언트를 시작합니다.");
-        Console.Write("서버 주소 입력 (예: http://localhost:5000): ");
-        var serverUrl = Console.ReadLine();
         // 허브 엔드포인트 설정
         var connection = new HubConnectionBuilder()
-            .WithUrl($"{serverUrl}/hub/blackjack")
+            .WithUrl($"{ServerUrl}/hub/blackjack")
             .WithAutomaticReconnect()
             .Build();
 
