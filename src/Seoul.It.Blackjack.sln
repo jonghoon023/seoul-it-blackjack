@@ -8,9 +8,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "items", "items", "{A735A56C
 		editorconfig.txt = editorconfig.txt
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Seoul.It.Blackjack.Backend", "Seoul.It.Blackjack.Backend\Seoul.It.Blackjack.Backend.csproj", "{8485E799-653B-4269-A92F-8B323671D654}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Seoul.It.Blackjack.Core", "Seoul.It.Blackjack.Core\Seoul.It.Blackjack.Core.csproj", "{DAA3465F-7890-4F91-8E66-55E4A8933906}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Seoul.It.Blackjack.TestClient", "Seoul.It.Blackjack.TestClient\Seoul.It.Blackjack.TestClient.csproj", "{9AE22B60-8D71-4D36-B170-4B53A77E6E08}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Seoul.It.Blackjack.Backend", "Seoul.It.Blackjack.Backend\Seoul.It.Blackjack.Backend.csproj", "{341D2A21-A2BD-45E5-9DC8-A8098CF37D75}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,14 +18,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{8485E799-653B-4269-A92F-8B323671D654}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8485E799-653B-4269-A92F-8B323671D654}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8485E799-653B-4269-A92F-8B323671D654}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8485E799-653B-4269-A92F-8B323671D654}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9AE22B60-8D71-4D36-B170-4B53A77E6E08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9AE22B60-8D71-4D36-B170-4B53A77E6E08}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9AE22B60-8D71-4D36-B170-4B53A77E6E08}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9AE22B60-8D71-4D36-B170-4B53A77E6E08}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DAA3465F-7890-4F91-8E66-55E4A8933906}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DAA3465F-7890-4F91-8E66-55E4A8933906}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DAA3465F-7890-4F91-8E66-55E4A8933906}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DAA3465F-7890-4F91-8E66-55E4A8933906}.Release|Any CPU.Build.0 = Release|Any CPU
+		{341D2A21-A2BD-45E5-9DC8-A8098CF37D75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{341D2A21-A2BD-45E5-9DC8-A8098CF37D75}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{341D2A21-A2BD-45E5-9DC8-A8098CF37D75}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{341D2A21-A2BD-45E5-9DC8-A8098CF37D75}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,4 +1,4 @@
-@Seoul.It.Blackjack.Backend_HostAddress = http://localhost:5199
+@Seoul.It.Blackjack.Backend_HostAddress = http://localhost:5223
 
 GET {{Seoul.It.Blackjack.Backend_HostAddress}}/weatherforecast/
 Accept: application/json
