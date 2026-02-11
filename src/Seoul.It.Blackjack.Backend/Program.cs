@@ -1,3 +1,6 @@
+using Seoul.It.Blackjack.Backend.Extensions;
+using Seoul.It.Blackjack.Backend.Hubs;
+
 namespace Seoul.It.Blackjack.Backend;
 
 internal class Program
@@ -15,6 +18,8 @@ internal class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
+        builder.Services.AddDealerOptions(builder.Configuration);
+
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
@@ -23,6 +28,8 @@ internal class Program
             app.UseSwagger();
             app.UseSwaggerUI();
         }
+
+        app.MapHub<GameSessionHub>("/blackjack");
 
         app.UseHttpsRedirection();
 
