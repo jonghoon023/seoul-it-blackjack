@@ -1,4 +1,4 @@
-﻿namespace Seoul.It.Blackjack.Core.Enums;
+﻿namespace Seoul.It.Blackjack.Core.Domain;
 
 public enum Rank
 {
@@ -17,7 +17,7 @@ public enum Rank
     Ace
 }
 
-public static class RaanExtension
+public static class RankExtension
 {
     public static int ToValue(this Rank rank) => rank switch
     {

@@ -1,5 +1,4 @@
-﻿using Seoul.It.Blackjack.Core;
-using Seoul.It.Blackjack.Core.Enums;
+﻿using Seoul.It.Blackjack.Core.Domain;
 
 namespace Seoul.It.Blackjack.Backend.Models;
 

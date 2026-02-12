@@ -1,4 +1,4 @@
-﻿namespace Seoul.It.Blackjack.Core.Enums;
+﻿namespace Seoul.It.Blackjack.Core.Domain;
 
 public enum Suit
 {
