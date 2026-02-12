@@ -7,6 +7,8 @@ namespace Seoul.It.Blackjack.Backend.Hubs;
 internal sealed class GameSessionHub(GameRoom room) 
     : Hub<IBlackjackClient>, IBlackjackServer
 {
+    public const string Endpoint = "/blackjack";
+
     public override Task OnConnectedAsync()
     {
         return base.OnConnectedAsync();

@@ -31,7 +31,7 @@ internal class Program
             app.UseSwaggerUI();
         }
 
-        app.MapHub<GameSessionHub>("/blackjack");
+        app.MapHub<GameSessionHub>(GameSessionHub.Endpoint);
 
         app.UseHttpsRedirection();
 
