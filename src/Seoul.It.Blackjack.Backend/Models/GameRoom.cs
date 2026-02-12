@@ -8,7 +8,7 @@ namespace Seoul.It.Blackjack.Backend.Models;
 internal sealed class GameRoom
 {
     private readonly IOptions<DealerOptions> _options;
-    private readonly List<Player> _players = [];
+    private readonly List<IPlayer> _players = [];
     private readonly Shoe _shoe = new(4);
 
     private readonly Channel<Func<Task>> _queue =
@@ -32,7 +32,7 @@ internal sealed class GameRoom
         {
             if (!_players.Any(player => player.Id == id))
             {
-                Player player = dealerKey == _options.Value.Key ?
+                IPlayer player = dealerKey == _options.Value.Key ?
                     new Dealer(id) : new Player(id, name);
                 _players.Add(player);
             }
@@ -45,7 +45,7 @@ internal sealed class GameRoom
     {
         return Enqueue(() =>
         {
-            if (_players.SingleOrDefault(player => player.Id == id) is Player player)
+            if (_players.SingleOrDefault(player => player.Id == id) is IPlayer player)
             {
                 _players.Remove(player);
             }
@@ -68,7 +68,7 @@ internal sealed class GameRoom
         });
     }
 
-    public Task EndAsync(string callerId)
+    public Task<GameState> EndAsync(string callerId)
     {
         return Enqueue(() =>
         {

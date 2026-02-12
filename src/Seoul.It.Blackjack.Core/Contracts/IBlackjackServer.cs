@@ -4,6 +4,8 @@ public interface IBlackjackServer
 {
     Task JoinAsync(string name, string? dealerKey);
 
+    Task LeaveAsync();
+
     Task StartGameAsync();
 
     Task EndGameAsync();

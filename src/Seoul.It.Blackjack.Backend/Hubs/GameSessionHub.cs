@@ -9,11 +9,6 @@ internal sealed class GameSessionHub(GameRoom room)
 {
     public const string Endpoint = "/blackjack";
 
-    public override Task OnConnectedAsync()
-    {
-        return base.OnConnectedAsync();
-    }
-
     public override async Task OnDisconnectedAsync(Exception? exception)
     {
         // 모든 사용자에게 알림
@@ -32,8 +27,19 @@ internal sealed class GameSessionHub(GameRoom room)
         GameState state = await room.JoinAsync(Context.ConnectionId, name, dealerKey);
 
         // 참가한 사용자에게만 알림
-        JoinResponse response = new(playerId, name);
-        await Clients.Caller.JoinedAsync(response);
+        IPlayer player = state.Players.Single(player => player.Id == playerId);
+        await Clients.Caller.JoinedAsync(player);
+
+        // 모든 사용자에게 알림
+        await Clients.All.GameStateUpdatedAsync(state);
+    }
+
+    public async Task LeaveAsync()
+    {
+        GameState state = await room.LeaveAsync(Context.ConnectionId);
+
+        // 나간 사용자에게만 알림
+        await Clients.Caller.LeavedAsync();
 
         // 모든 사용자에게 알림
         await Clients.All.GameStateUpdatedAsync(state);

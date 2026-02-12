@@ -1,3 +1,3 @@
 namespace Seoul.It.Blackjack.Core.Contracts;
 
-public record GameState(string CurrentTurnPlayerId, IEnumerable<Player> Players);
+public record GameState(string CurrentTurnPlayerId, IEnumerable<IPlayer> Players);
