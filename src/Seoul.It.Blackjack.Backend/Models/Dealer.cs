@@ -1,6 +1,8 @@
-﻿namespace Seoul.It.Blackjack.Backend.Models;
+﻿using Seoul.It.Blackjack.Core.Contracts;
 
-public class Dealer(string id) : Player("Dealer")
+namespace Seoul.It.Blackjack.Backend.Models;
+
+public class Dealer(string id) : Player(id, "Dealer")
 {
     public override bool IsDealer => true;
 }

@@ -1,5 +1,6 @@
 using Seoul.It.Blackjack.Backend.Extensions;
 using Seoul.It.Blackjack.Backend.Hubs;
+using Seoul.It.Blackjack.Backend.Models;
 
 namespace Seoul.It.Blackjack.Backend;
 
@@ -19,6 +20,7 @@ internal class Program
         builder.Services.AddSwaggerGen();
 
         builder.Services.AddDealerOptions(builder.Configuration);
+        builder.Services.AddSingleton<GameRoom>();
 
         var app = builder.Build();
 

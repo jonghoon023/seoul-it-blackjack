@@ -2,5 +2,7 @@
 
 public interface IBlackjackClient
 {
-    public Task JoinAsyncc(string name);
+    public Task JoinedAsync(JoinResponse response);
+
+    public Task GameStateUpdatedAsync(GameState state);
 }
