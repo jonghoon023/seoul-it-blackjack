@@ -1,4 +1,4 @@
-﻿using Seoul.It.Blackjack.Core.Domain;
+using Seoul.It.Blackjack.Core.Domain;
 
 namespace Seoul.It.Blackjack.Core.Contracts;
 

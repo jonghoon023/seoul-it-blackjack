@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.SignalR;
+using Microsoft.AspNetCore.SignalR;
 using Seoul.It.Blackjack.Backend.Models;
 using Seoul.It.Blackjack.Core.Contracts;
 

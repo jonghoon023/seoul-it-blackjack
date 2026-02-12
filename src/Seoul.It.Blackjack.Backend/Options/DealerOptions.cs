@@ -1,4 +1,4 @@
-﻿namespace Seoul.It.Blackjack.Backend.Options;
+namespace Seoul.It.Blackjack.Backend.Options;
 
 public sealed class DealerOptions
 {

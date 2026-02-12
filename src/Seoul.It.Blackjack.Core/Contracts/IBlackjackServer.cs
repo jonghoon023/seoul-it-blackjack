@@ -1,4 +1,4 @@
-﻿namespace Seoul.It.Blackjack.Core.Contracts;
+namespace Seoul.It.Blackjack.Core.Contracts;
 
 public interface IBlackjackServer
 {

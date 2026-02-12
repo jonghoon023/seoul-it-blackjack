@@ -1,4 +1,4 @@
-﻿namespace Seoul.It.Blackjack.Backend.Models;
+namespace Seoul.It.Blackjack.Backend.Models;
 
 internal enum GamePhase
 {

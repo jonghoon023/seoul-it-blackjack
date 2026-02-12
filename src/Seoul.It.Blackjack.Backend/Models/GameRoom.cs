@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Options;
 using Seoul.It.Blackjack.Backend.Options;
 using Seoul.It.Blackjack.Core.Contracts;
 using System.Threading.Channels;
