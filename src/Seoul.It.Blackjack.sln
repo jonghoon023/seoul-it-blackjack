@@ -5,7 +5,7 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "items", "items", "{A735A56C-0C9E-4887-BBBE-92CA5AAED017}"
 	ProjectSection(SolutionItems) = preProject
 		Directory.Build.props = Directory.Build.props
-		editorconfig.txt = editorconfig.txt
+		editorconfig = editorconfig
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Seoul.It.Blackjack.Core", "Seoul.It.Blackjack.Core\Seoul.It.Blackjack.Core.csproj", "{DAA3465F-7890-4F91-8E66-55E4A8933906}"

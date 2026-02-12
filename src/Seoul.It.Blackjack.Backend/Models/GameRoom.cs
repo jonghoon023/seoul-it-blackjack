@@ -32,7 +32,7 @@ internal sealed class GameRoom
         {
             if (!_players.Any(player => player.Id == id))
             {
-                Player player = dealerKey == options.Value.Key ?
+                Player player = dealerKey == _options.Value.Key ?
                     new Dealer(id) : new Player(id, name);
                 _players.Add(player);
             }
@@ -60,7 +60,7 @@ internal sealed class GameRoom
         {
             if (!IsDealer(callerId))
             {
-                throw new Exception("게임의 시작은 딜러만 할 수 있습니다.");
+                throw new InvalidOperationException("게임의 시작은 딜러만 할 수 있습니다.");
             }
 
             Phase = GamePhase.InGame;
@@ -74,7 +74,7 @@ internal sealed class GameRoom
         {
             if (!IsDealer(callerId))
             {
-                throw new Exception("게임의 종료는 딜러만 할 수 있습니다.");
+                throw new InvalidOperationException("게임의 종료는 딜러만 할 수 있습니다.");
             }
 
             Phase = GamePhase.Lobby;

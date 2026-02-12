@@ -37,9 +37,17 @@ internal sealed class GameSessionHub(GameRoom room)
         await Clients.All.GameStateUpdatedAsync(state);
     }
 
-    public Task StartGameAsync() => room.StartAsync(Context.ConnectionId);
+    public async Task StartGameAsync()
+    {
+        GameState state = await room.StartAsync(Context.ConnectionId);
+        await Clients.All.GameStateUpdatedAsync(state);
+    }
 
-    public Task EndGameAsync() => room.EndAsync(Context.ConnectionId);
+    public async Task EndGameAsync()
+    {
+        GameState state = await room.EndAsync(Context.ConnectionId);
+        await Clients.All.GameStateUpdatedAsync(state);
+    }
 
     public Task HitAsync()
     {
