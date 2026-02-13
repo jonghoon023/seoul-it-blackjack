@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Seoul.It.Blackjack.Backend.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Seoul.It.Blackjack.Client", "Seoul.It.Blackjack.Client\Seoul.It.Blackjack.Client.csproj", "{8D18BCD6-B37F-4B85-8024-4517CEBC385A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Seoul.It.Blackjack.Frontend", "Seoul.It.Blackjack.Frontend\Seoul.It.Blackjack.Frontend.csproj", "{5FB398C9-599C-49FF-ABD6-ECB2224C639B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +77,18 @@ Global
 		{8D18BCD6-B37F-4B85-8024-4517CEBC385A}.Release|x64.Build.0 = Release|Any CPU
 		{8D18BCD6-B37F-4B85-8024-4517CEBC385A}.Release|x86.ActiveCfg = Release|Any CPU
 		{8D18BCD6-B37F-4B85-8024-4517CEBC385A}.Release|x86.Build.0 = Release|Any CPU
+		{5FB398C9-599C-49FF-ABD6-ECB2224C639B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5FB398C9-599C-49FF-ABD6-ECB2224C639B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5FB398C9-599C-49FF-ABD6-ECB2224C639B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{5FB398C9-599C-49FF-ABD6-ECB2224C639B}.Debug|x64.Build.0 = Debug|Any CPU
+		{5FB398C9-599C-49FF-ABD6-ECB2224C639B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5FB398C9-599C-49FF-ABD6-ECB2224C639B}.Debug|x86.Build.0 = Debug|Any CPU
+		{5FB398C9-599C-49FF-ABD6-ECB2224C639B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5FB398C9-599C-49FF-ABD6-ECB2224C639B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5FB398C9-599C-49FF-ABD6-ECB2224C639B}.Release|x64.ActiveCfg = Release|Any CPU
+		{5FB398C9-599C-49FF-ABD6-ECB2224C639B}.Release|x64.Build.0 = Release|Any CPU
+		{5FB398C9-599C-49FF-ABD6-ECB2224C639B}.Release|x86.ActiveCfg = Release|Any CPU
+		{5FB398C9-599C-49FF-ABD6-ECB2224C639B}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

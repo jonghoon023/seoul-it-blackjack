@@ -1,0 +1,42 @@
+.action-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.summary,
+.errors {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 16px;
+}
+
+.players {
+    display: grid;
+    gap: 12px;
+}
+
+.player {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 12px;
+}
+
+.cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.cards img {
+    width: 72px;
+    height: auto;
+}
+
+.errors ul {
+    margin: 0;
+    padding-left: 18px;
+}

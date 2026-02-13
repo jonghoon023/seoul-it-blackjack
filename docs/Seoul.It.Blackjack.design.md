@@ -261,25 +261,45 @@
 #### 6.3.1 타겟 프레임워크
 - `Seoul.It.Blackjack.Frontend`: `net8.0`(Blazor)
 
-#### 6.3.2 화면 구성
-- 접속/입장 영역
-- 플레이어 목록 및 딜러 표시
-- 현재 턴 표시
-- 내 액션(Hit/Stand)
-- 딜러 StartRound 버튼
-- 상태 메시지/오류 메시지
-- 라운드 종료 결과 표시
+#### 6.3.2 화면/라우팅 구성
+- 페이지는 2개로 고정한다.
+1. `Entry(/)`:
+  - 사용자 이름 입력
+  - 딜러 키(옵션) 입력
+  - `다음` 버튼
+2. `Table(/table)`:
+  - 진입 시 자동 `Connect + Join`
+  - 플레이어 목록/카드/점수/턴/결과 표시
+  - 액션 버튼(`Leave`, `StartRound`, `Hit`, `Stand`)
+  - 상태 메시지/오류 메시지 표시
 
-#### 6.3.3 상태 처리
+#### 6.3.3 카드 에셋 정책
+- 카드 SVG는 수업 운영 시 제공 ZIP을 `wwwroot/cards`에 압축 해제해 배치한다.
+- 렌더링 경로 규칙은 `cards/{suit}_{rank}.svg`를 사용한다.
+- 카드 경로 계산은 확장 함수(`CardExtensions.ToAssetPath`)로 처리한다.
+
+#### 6.3.4 상태 처리
 - Frontend는 `GameState`를 그대로 렌더링한다.
 - 점수/승패/턴 판정 로직은 Backend를 신뢰한다.
+- Entry 입력값은 Frontend의 `Scoped` 상태 객체를 통해 Table로 전달한다.
+
+#### 6.3.5 테스트 전략
+- Frontend 테스트는 `MSTest + bUnit`으로 구성한다.
+- 회귀 테스트 항목:
+1. Entry 입력/검증/이동
+2. Table 자동 Connect+Join
+3. Table 액션 버튼 호출
+4. 상태/오류 이벤트 렌더링 반영
+5. 카드 경로 확장 함수 및 이미지 `src` 규칙
 
 ### 6.4 2단계 완료 기준
-1. Frontend에서 Join/Leave 가능
-2. 딜러 StartRound 가능
-3. 플레이어 Hit/Stand 가능
-4. 상태 갱신과 오류 메시지 UI 반영
-5. 라운드 결과 표시
+1. Frontend가 `Entry(/)`, `Table(/table)` 2페이지로 동작한다.
+2. Entry에서 이름/딜러키 입력 후 Table로 이동한다.
+3. Table 진입 시 자동 Connect+Join이 수행된다.
+4. Table에서 Join/Leave/StartRound/Hit/Stand 동작 가능하다.
+5. 상태 갱신과 오류 메시지가 UI에 반영된다.
+6. 카드 SVG가 `wwwroot/cards`에서 정상 렌더링된다.
+7. Frontend 회귀 테스트(`MSTest + bUnit`)가 통과한다.
 
 ## 7. 구현 및 승인 절차
 - 작업은 반드시 세부 계획 수립 후 승인받아 진행한다.

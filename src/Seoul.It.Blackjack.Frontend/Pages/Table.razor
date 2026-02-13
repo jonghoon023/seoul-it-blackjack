@@ -1,0 +1,161 @@
+@page "/table"
+@implements IAsyncDisposable
+@inject IFrontendGameSession Session
+@inject FrontendEntryState EntryState
+@inject NavigationManager Navigation
+
+<h1>블랙잭 테이블</h1>
+
+@if (_isAutoJoining)
+{
+    <p data-testid="auto-joining">자동 접속/입장 중입니다...</p>
+}
+
+<section class="action-row">
+    <button id="leave" @onclick="LeaveAsync" disabled="@(!Session.IsJoined)">Leave</button>
+    <button id="startRound" @onclick="StartRoundAsync" disabled="@(!Session.IsJoined)">StartRound</button>
+    <button id="hit" @onclick="HitAsync" disabled="@(!CanHitOrStand)">Hit</button>
+    <button id="stand" @onclick="StandAsync" disabled="@(!CanHitOrStand)">Stand</button>
+</section>
+
+@if (_state is not null)
+{
+    <section class="summary">
+        <p data-testid="phase">Phase: @_state.Phase</p>
+        <p>Dealer: @_state.DealerPlayerId</p>
+        <p>CurrentTurn: @_state.CurrentTurnPlayerId</p>
+        <p>Status: @_state.StatusMessage</p>
+    </section>
+
+    <section class="players">
+        @foreach (PlayerState player in _state.Players)
+        {
+            <article class="player">
+                <h3>@player.Name (@(player.IsDealer ? "Dealer" : "Player"))</h3>
+                <p>Score: @player.Score</p>
+                <p>TurnState: @player.TurnState</p>
+                <p>Outcome: @player.Outcome</p>
+                <div class="cards">
+                    @foreach (Card card in player.Cards)
+                    {
+                        <img src="@card.ToAssetPath()" alt="card" />
+                    }
+                </div>
+            </article>
+        }
+    </section>
+}
+
+@if (_errors.Count > 0)
+{
+    <section class="errors">
+        <h3>오류</h3>
+        <ul>
+            @foreach ((string Code, string Message) error in _errors)
+            {
+                <li>@error.Code: @error.Message</li>
+            }
+        </ul>
+    </section>
+}
+
+@code {
+    private readonly List<(string Code, string Message)> _errors = [];
+    private GameState? _state;
+    private bool _autoJoinRequested;
+    private bool _isAutoJoining;
+
+    private bool CanHitOrStand =>
+        Session.IsJoined &&
+        _state is not null &&
+        _state.Phase == GamePhase.InRound;
+
+    protected override void OnInitialized()
+    {
+        Session.StateChanged += OnStateChanged;
+        Session.ErrorReceived += OnErrorReceived;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender || _autoJoinRequested)
+        {
+            return;
+        }
+
+        _autoJoinRequested = true;
+
+        if (string.IsNullOrWhiteSpace(EntryState.PlayerName))
+        {
+            Navigation.NavigateTo("/");
+            return;
+        }
+
+        _isAutoJoining = true;
+        await InvokeAsync(StateHasChanged);
+
+        try
+        {
+            await Session.ConnectAsync();
+            await Session.JoinAsync(EntryState.PlayerName, NormalizeDealerKey(EntryState.DealerKey));
+        }
+        catch (Exception ex)
+        {
+            _errors.Insert(0, ("AUTO_JOIN_FAILED", ex.Message));
+        }
+
+        _isAutoJoining = false;
+        await InvokeAsync(StateHasChanged);
+    }
+
+    public ValueTask DisposeAsync()
+    {
+        Session.StateChanged -= OnStateChanged;
+        Session.ErrorReceived -= OnErrorReceived;
+        return ValueTask.CompletedTask;
+    }
+
+    private static string? NormalizeDealerKey(string value)
+    {
+        string normalized = value.Trim();
+        return string.IsNullOrWhiteSpace(normalized) ? null : normalized;
+    }
+
+    private Task LeaveAsync() => ExecuteAsync(() => Session.LeaveAsync(), "LEAVE_FAILED");
+
+    private Task StartRoundAsync() => ExecuteAsync(() => Session.StartRoundAsync(), "START_FAILED");
+
+    private Task HitAsync() => ExecuteAsync(() => Session.HitAsync(), "HIT_FAILED");
+
+    private Task StandAsync() => ExecuteAsync(() => Session.StandAsync(), "STAND_FAILED");
+
+    private async Task ExecuteAsync(Func<Task> action, string fallbackCode)
+    {
+        try
+        {
+            await action();
+        }
+        catch (Exception ex)
+        {
+            _errors.Insert(0, (fallbackCode, ex.Message));
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+
+    private void OnStateChanged(GameState state)
+    {
+        _state = state;
+        _ = InvokeAsync(StateHasChanged);
+    }
+
+    private void OnErrorReceived(string code, string message)
+    {
+        _errors.Insert(0, (code, message));
+        if (_errors.Count > 10)
+        {
+            _errors.RemoveAt(_errors.Count - 1);
+        }
+
+        _ = InvokeAsync(StateHasChanged);
+    }
+}

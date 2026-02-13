@@ -1,0 +1,53 @@
+@page "/"
+@inject FrontendEntryState EntryState
+@inject NavigationManager Navigation
+
+<h1>입장 정보 입력</h1>
+
+<section class="entry-panel">
+    <div class="field">
+        <label for="playerName">사용자 이름</label>
+        <input id="playerName" @bind="_playerName" />
+    </div>
+
+    <div class="field">
+        <label for="dealerKey">딜러 키 (옵션)</label>
+        <input id="dealerKey" @bind="_dealerKey" />
+    </div>
+
+    @if (!string.IsNullOrWhiteSpace(_validationMessage))
+    {
+        <p class="validation">@_validationMessage</p>
+    }
+
+    <button id="next" @onclick="GoNextAsync" disabled="@(!CanProceed)">다음</button>
+</section>
+
+@code {
+    private string _playerName = string.Empty;
+    private string _dealerKey = string.Empty;
+    private string _validationMessage = string.Empty;
+
+    private bool CanProceed => !string.IsNullOrWhiteSpace(_playerName);
+
+    protected override void OnInitialized()
+    {
+        _playerName = EntryState.PlayerName;
+        _dealerKey = EntryState.DealerKey;
+    }
+
+    private Task GoNextAsync()
+    {
+        if (!CanProceed)
+        {
+            _validationMessage = "이름을 입력해 주세요.";
+            return Task.CompletedTask;
+        }
+
+        EntryState.PlayerName = _playerName.Trim();
+        EntryState.DealerKey = _dealerKey.Trim();
+        _validationMessage = string.Empty;
+        Navigation.NavigateTo("/table");
+        return Task.CompletedTask;
+    }
+}
