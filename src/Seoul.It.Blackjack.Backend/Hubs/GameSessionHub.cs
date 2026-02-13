@@ -1,69 +1,70 @@
 using Microsoft.AspNetCore.SignalR;
-using Seoul.It.Blackjack.Backend.Models;
+using Seoul.It.Blackjack.Backend.Services;
+using Seoul.It.Blackjack.Backend.Services.Commands;
+using Seoul.It.Blackjack.Backend.Services.Exceptions;
 using Seoul.It.Blackjack.Core.Contracts;
+using System;
+using System.Threading.Tasks;
 
 namespace Seoul.It.Blackjack.Backend.Hubs;
 
-internal sealed class GameSessionHub(GameRoom room) 
-    : Hub<IBlackjackClient>, IBlackjackServer
+internal sealed class GameSessionHub(GameRoomService room) : Hub<IBlackjackClient>, IBlackjackServer
 {
     public const string Endpoint = "/blackjack";
 
     public override async Task OnDisconnectedAsync(Exception? exception)
     {
-        // 모든 사용자에게 알림
-        GameState state = await room.LeaveAsync(Context.ConnectionId);
-        await Clients.All.GameStateUpdatedAsync(state);
-    }
-
-    public async Task JoinAsync(string name, string? dealerKey)
-    {
-        if (room.Phase != GamePhase.Lobby)
+        try
         {
-            throw new HubException("게임이 진행 중이라 입장할 수 없습니다.");
+            GameCommandResult result = await room.DisconnectAsync(Context.ConnectionId);
+            await BroadcastResultAsync(result);
+        }
+        catch (GameRoomException)
+        {
+            // 연결 종료 중 에러는 무시한다.
         }
 
-        string playerId = Context.ConnectionId;
-        GameState state = await room.JoinAsync(Context.ConnectionId, name, dealerKey);
-
-        // 참가한 사용자에게만 알림
-        IPlayer player = state.Players.Single(player => player.Id == playerId);
-        await Clients.Caller.JoinedAsync(player);
-
-        // 모든 사용자에게 알림
-        await Clients.All.GameStateUpdatedAsync(state);
+        await base.OnDisconnectedAsync(exception);
     }
 
-    public async Task LeaveAsync()
+    public Task Join(string name, string? dealerKey) =>
+        ExecuteAsync(() => room.JoinAsync(Context.ConnectionId, name, dealerKey));
+
+    public Task Leave() =>
+        ExecuteAsync(() => room.LeaveAsync(Context.ConnectionId));
+
+    public Task StartRound() =>
+        ExecuteAsync(() => room.StartRoundAsync(Context.ConnectionId));
+
+    public Task Hit() =>
+        ExecuteAsync(() => room.HitAsync(Context.ConnectionId));
+
+    public Task Stand() =>
+        ExecuteAsync(() => room.StandAsync(Context.ConnectionId));
+
+    private async Task ExecuteAsync(Func<Task<GameCommandResult>> action)
     {
-        GameState state = await room.LeaveAsync(Context.ConnectionId);
-
-        // 나간 사용자에게만 알림
-        await Clients.Caller.LeavedAsync();
-
-        // 모든 사용자에게 알림
-        await Clients.All.GameStateUpdatedAsync(state);
+        try
+        {
+            GameCommandResult result = await action();
+            await BroadcastResultAsync(result);
+        }
+        catch (GameRoomException ex)
+        {
+            await Clients.Caller.Error(ex.Code, ex.Message);
+        }
     }
 
-    public async Task StartGameAsync()
+    private async Task BroadcastResultAsync(GameCommandResult result)
     {
-        GameState state = await room.StartAsync(Context.ConnectionId);
-        await Clients.All.GameStateUpdatedAsync(state);
-    }
+        if (!string.IsNullOrEmpty(result.BroadcastErrorCode))
+        {
+            await Clients.All.Error(result.BroadcastErrorCode, result.BroadcastErrorMessage ?? string.Empty);
+        }
 
-    public async Task EndGameAsync()
-    {
-        GameState state = await room.EndAsync(Context.ConnectionId);
-        await Clients.All.GameStateUpdatedAsync(state);
-    }
-
-    public Task HitAsync()
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task StandAsync()
-    {
-        throw new NotImplementedException();
+        if (result.ShouldBroadcastState)
+        {
+            await Clients.All.StateChanged(result.State);
+        }
     }
 }

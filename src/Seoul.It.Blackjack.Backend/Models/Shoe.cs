@@ -22,11 +22,13 @@ internal sealed class Shoe
 
     public Card Draw()
     {
-        if (_cards.TryPop(out Card? card))
-        {
-            return card;
-        }
+        return TryDraw(out Card? card)
+            ? card
+            : throw new InvalidOperationException("Shoe 에 카드가 더 이상 없습니다.");
+    }
 
-        throw new InvalidOperationException("Shoe 에 카드가 더 이상 없습니다.");
+    public bool TryDraw(out Card? card)
+    {
+        return _cards.TryPop(out card);
     }
 }

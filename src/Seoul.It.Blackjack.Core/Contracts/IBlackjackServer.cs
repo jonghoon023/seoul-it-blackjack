@@ -1,16 +1,16 @@
+using System.Threading.Tasks;
+
 namespace Seoul.It.Blackjack.Core.Contracts;
 
 public interface IBlackjackServer
 {
-    Task JoinAsync(string name, string? dealerKey);
+    Task Join(string name, string? dealerKey);
 
-    Task LeaveAsync();
+    Task Leave();
 
-    Task StartGameAsync();
+    Task StartRound();
 
-    Task EndGameAsync();
+    Task Hit();
 
-    Task HitAsync();
-
-    Task StandAsync();
+    Task Stand();
 }

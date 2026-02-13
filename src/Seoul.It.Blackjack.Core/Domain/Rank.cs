@@ -1,3 +1,5 @@
+using System;
+
 namespace Seoul.It.Blackjack.Core.Domain;
 
 public enum Rank
@@ -30,7 +32,7 @@ public static class RankExtension
         Rank.Seven => 7,
         Rank.Eight => 8,
         Rank.Nine => 9,
-        Rank.Ten or Rank.Jack or Rank.Queen or Rank.Jack or Rank.King => 10,
-        _ => throw new NotImplementedException(),
+        Rank.Ten or Rank.Jack or Rank.Queen or Rank.King => 10,
+        _ => throw new ArgumentOutOfRangeException(nameof(rank), rank, "Unknown card rank."),
     };
 }

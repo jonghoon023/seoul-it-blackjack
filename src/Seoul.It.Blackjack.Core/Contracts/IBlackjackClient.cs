@@ -1,10 +1,10 @@
+using System.Threading.Tasks;
+
 namespace Seoul.It.Blackjack.Core.Contracts;
 
 public interface IBlackjackClient
 {
-    public Task JoinedAsync(IPlayer player);
+    Task StateChanged(GameState state);
 
-    public Task LeavedAsync();
-
-    public Task GameStateUpdatedAsync(GameState state);
+    Task Error(string code, string message);
 }

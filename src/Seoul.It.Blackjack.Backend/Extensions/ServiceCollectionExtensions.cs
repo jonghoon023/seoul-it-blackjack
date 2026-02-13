@@ -6,6 +6,6 @@ internal static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddDealerOptions(this IServiceCollection services, IConfiguration configuration)
     {
-        return services.Configure<DealerOptions>(configuration);
+        return services.Configure<DealerOptions>(configuration.GetSection(DealerOptions.DefaultSectionName));
     }
 }
