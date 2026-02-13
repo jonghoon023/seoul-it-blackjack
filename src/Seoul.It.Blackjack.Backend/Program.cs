@@ -8,8 +8,15 @@ using Seoul.It.Blackjack.Backend.Services.State;
 
 namespace Seoul.It.Blackjack.Backend;
 
+/// <summary>
+/// 백엔드 서버 시작 지점을 담는 클래스입니다.
+/// </summary>
 public partial class Program
 {
+    /// <summary>
+    /// 백엔드 웹 애플리케이션을 구성하고 실행합니다.
+    /// </summary>
+    /// <param name="args">프로그램 시작 인자입니다.</param>
     private static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
