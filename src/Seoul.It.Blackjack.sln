@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Seoul.It.Blackjack.Frontend
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Seoul.It.Blackjack.Frontend.Tests", "Seoul.It.Blackjack.Frontend.Tests\Seoul.It.Blackjack.Frontend.Tests.csproj", "{BE488585-6ACD-402C-A4F2-9419AB2DE7DC}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{8103B37A-7D07-4305-91D5-A8CA634401C3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -106,6 +108,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6301CF2D-2AEA-458D-A170-9C8D5F135CB1} = {8103B37A-7D07-4305-91D5-A8CA634401C3}
+		{BE488585-6ACD-402C-A4F2-9419AB2DE7DC} = {8103B37A-7D07-4305-91D5-A8CA634401C3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {56F63AE9-F907-46D3-B9F5-304077E96C9E}
