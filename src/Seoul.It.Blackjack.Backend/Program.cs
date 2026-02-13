@@ -1,6 +1,7 @@
 using Seoul.It.Blackjack.Backend.Extensions;
 using Seoul.It.Blackjack.Backend.Hubs;
 using Seoul.It.Blackjack.Backend.Services;
+using Seoul.It.Blackjack.Backend.Services.Infrastructure;
 using Seoul.It.Blackjack.Backend.Services.Round;
 using Seoul.It.Blackjack.Backend.Services.Rules;
 using Seoul.It.Blackjack.Backend.Services.State;
@@ -22,6 +23,7 @@ public partial class Program
         builder.Services.AddSingleton<IGameRuleValidator, GameRuleValidator>();
         builder.Services.AddSingleton<IRoundEngine, RoundEngine>();
         builder.Services.AddSingleton<IGameStateSnapshotFactory, GameStateSnapshotFactory>();
+        builder.Services.AddSingleton<IGameCommandProcessor, ChannelGameCommandProcessor>();
         builder.Services.AddSingleton<IGameRoomService, GameRoomService>();
 
         var app = builder.Build();

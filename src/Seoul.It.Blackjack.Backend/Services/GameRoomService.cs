@@ -3,6 +3,7 @@ using Seoul.It.Blackjack.Backend.Models;
 using Seoul.It.Blackjack.Backend.Options;
 using Seoul.It.Blackjack.Backend.Services.Commands;
 using Seoul.It.Blackjack.Backend.Services.Exceptions;
+using Seoul.It.Blackjack.Backend.Services.Infrastructure;
 using Seoul.It.Blackjack.Backend.Services.Round;
 using Seoul.It.Blackjack.Backend.Services.Rules;
 using Seoul.It.Blackjack.Backend.Services.State;
@@ -10,7 +11,6 @@ using Seoul.It.Blackjack.Core.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Channels;
 using System.Threading.Tasks;
 
 namespace Seoul.It.Blackjack.Backend.Services;
@@ -23,12 +23,8 @@ internal sealed class GameRoomService : IGameRoomService
     private readonly IGameRuleValidator _validator;
     private readonly IRoundEngine _roundEngine;
     private readonly IGameStateSnapshotFactory _snapshotFactory;
+    private readonly IGameCommandProcessor _commandProcessor;
     private readonly List<PlayerState> _players = new();
-    private readonly Channel<QueueItem> _queue = Channel.CreateUnbounded<QueueItem>(new UnboundedChannelOptions
-    {
-        SingleReader = true,
-        SingleWriter = false,
-    });
     private Shoe? _shoe;
     private GamePhase _phase = GamePhase.Idle;
     private string _dealerPlayerId = string.Empty;
@@ -41,7 +37,8 @@ internal sealed class GameRoomService : IGameRoomService
         ConnectionRegistry connections,
         IGameRuleValidator validator,
         IRoundEngine roundEngine,
-        IGameStateSnapshotFactory snapshotFactory)
+        IGameStateSnapshotFactory snapshotFactory,
+        IGameCommandProcessor commandProcessor)
     {
         _dealerOptions = dealerOptions.Value;
         _gameRuleOptions = gameRuleOptions.Value;
@@ -49,43 +46,43 @@ internal sealed class GameRoomService : IGameRoomService
         _validator = validator;
         _roundEngine = roundEngine;
         _snapshotFactory = snapshotFactory;
-        _ = Task.Run(ProcessLoopAsync);
+        _commandProcessor = commandProcessor;
     }
 
     public Task<GameOperationResult> JoinAsync(string connectionId, string name, string? dealerKey)
     {
         GameCommand command = new(GameCommandType.Join, connectionId, name, dealerKey);
-        return Enqueue(command, () => HandleJoin(command));
+        return _commandProcessor.EnqueueAsync(command, () => HandleJoin(command));
     }
 
     public Task<GameOperationResult> LeaveAsync(string connectionId)
     {
         GameCommand command = new(GameCommandType.Leave, connectionId);
-        return Enqueue(command, () => HandleLeave(command, false));
+        return _commandProcessor.EnqueueAsync(command, () => HandleLeave(command, false));
     }
 
     public Task<GameOperationResult> DisconnectAsync(string connectionId)
     {
         GameCommand command = new(GameCommandType.Disconnect, connectionId);
-        return Enqueue(command, () => HandleLeave(command, true));
+        return _commandProcessor.EnqueueAsync(command, () => HandleLeave(command, true));
     }
 
     public Task<GameOperationResult> StartRoundAsync(string connectionId)
     {
         GameCommand command = new(GameCommandType.StartRound, connectionId);
-        return Enqueue(command, () => HandleStartRound(command));
+        return _commandProcessor.EnqueueAsync(command, () => HandleStartRound(command));
     }
 
     public Task<GameOperationResult> HitAsync(string connectionId)
     {
         GameCommand command = new(GameCommandType.Hit, connectionId);
-        return Enqueue(command, () => HandleHit(command));
+        return _commandProcessor.EnqueueAsync(command, () => HandleHit(command));
     }
 
     public Task<GameOperationResult> StandAsync(string connectionId)
     {
         GameCommand command = new(GameCommandType.Stand, connectionId);
-        return Enqueue(command, () => HandleStand(command));
+        return _commandProcessor.EnqueueAsync(command, () => HandleStand(command));
     }
 
     private GameOperationResult HandleJoin(GameCommand command)
@@ -253,7 +250,6 @@ internal sealed class GameRoomService : IGameRoomService
             _currentTurnPlayerId);
     }
 
-
     private void ResetToIdle(bool clearDealer, bool clearCurrentTurn)
     {
         _phase = GamePhase.Idle;
@@ -300,43 +296,4 @@ internal sealed class GameRoomService : IGameRoomService
             _players),
         ShouldPublishState = false,
     };
-
-    private async Task ProcessLoopAsync()
-    {
-        await foreach (QueueItem item in _queue.Reader.ReadAllAsync())
-        {
-            try
-            {
-                GameOperationResult result = item.Handler();
-                item.Completion.SetResult(result);
-            }
-            catch (Exception ex)
-            {
-                item.Completion.SetException(ex);
-            }
-        }
-    }
-
-    private Task<GameOperationResult> Enqueue(GameCommand command, Func<GameOperationResult> handler)
-    {
-        QueueItem item = new(command, handler);
-        _queue.Writer.TryWrite(item);
-        return item.Completion.Task;
-    }
-
-    private sealed class QueueItem
-    {
-        public QueueItem(GameCommand command, Func<GameOperationResult> handler)
-        {
-            Command = command;
-            Handler = handler;
-        }
-
-        public GameCommand Command { get; }
-
-        public Func<GameOperationResult> Handler { get; }
-
-        public TaskCompletionSource<GameOperationResult> Completion { get; } =
-            new(TaskCreationOptions.RunContinuationsAsynchronously);
-    }
 }
