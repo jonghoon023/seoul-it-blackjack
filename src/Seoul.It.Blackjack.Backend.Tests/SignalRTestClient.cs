@@ -20,13 +20,23 @@ internal sealed class SignalRTestClient : IAsyncDisposable
                 options => options.HttpMessageHandlerFactory = _ => factory.Server.CreateHandler())
             .Build();
 
-        _connection.On<GameState>("StateChanged", state => States.Add(state));
-        _connection.On<string, string>("Error", (code, message) => Errors.Add((code, message)));
+        _connection.On<GameState>("StateChanged", state =>
+        {
+            Events.Add(("StateChanged", null));
+            States.Add(state);
+        });
+        _connection.On<string, string>("Error", (code, message) =>
+        {
+            Events.Add(("Error", code));
+            Errors.Add((code, message));
+        });
     }
 
     public List<GameState> States { get; } = new();
 
     public List<(string Code, string Message)> Errors { get; } = new();
+
+    public List<(string Type, string? Code)> Events { get; } = new();
 
     public Task ConnectAsync() => _connection.StartAsync();
 

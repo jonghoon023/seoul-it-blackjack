@@ -1,5 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Seoul.It.Blackjack.Core.Contracts;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -52,6 +53,37 @@ public class DealerTerminationTests
         GameState state = player.States.Last();
         Assert.AreEqual(GamePhase.Idle, state.Phase);
         Assert.AreEqual(0, state.Players.Count);
+    }
+
+    [TestMethod]
+    public async Task DealerLeave_BroadcastsTerminationAndResetExactlyOnce_InOrder()
+    {
+        using TestHostFactory factory = new();
+        await using SignalRTestClient dealer = new(factory);
+        await using SignalRTestClient player = new(factory);
+
+        await dealer.ConnectAsync();
+        await player.ConnectAsync();
+        await dealer.JoinAsync("Dealer", DealerKey);
+        await player.JoinAsync("Player");
+        await TestWaiter.WaitUntilAsync(() => player.States.Count >= 2);
+
+        int stateBefore = player.States.Count;
+        int errorBefore = player.Errors.Count(value => value.Code == "GAME_TERMINATED");
+        int eventBefore = player.Events.Count;
+
+        await dealer.LeaveAsync();
+        await TestWaiter.WaitUntilAsync(() =>
+            player.Errors.Count(value => value.Code == "GAME_TERMINATED") == errorBefore + 1);
+        await TestWaiter.WaitUntilAsync(() => player.States.Count == stateBefore + 1);
+
+        Assert.AreEqual(errorBefore + 1, player.Errors.Count(value => value.Code == "GAME_TERMINATED"));
+
+        List<(string Type, string? Code)> events = player.Events.Skip(eventBefore).ToList();
+        Assert.AreEqual(2, events.Count);
+        Assert.AreEqual("Error", events[0].Type);
+        Assert.AreEqual("GAME_TERMINATED", events[0].Code);
+        Assert.AreEqual("StateChanged", events[1].Type);
     }
 
     [TestMethod]

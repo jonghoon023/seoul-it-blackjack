@@ -8,4 +8,9 @@ internal static class ServiceCollectionExtensions
     {
         return services.Configure<DealerOptions>(configuration.GetSection(DealerOptions.DefaultSectionName));
     }
+
+    public static IServiceCollection AddGameRuleOptions(this IServiceCollection services, IConfiguration configuration)
+    {
+        return services.Configure<GameRuleOptions>(configuration.GetSection(GameRuleOptions.DefaultSectionName));
+    }
 }

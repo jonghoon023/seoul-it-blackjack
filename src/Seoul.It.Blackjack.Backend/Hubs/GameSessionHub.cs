@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Seoul.It.Blackjack.Backend.Hubs;
 
-internal sealed class GameSessionHub(GameRoomService room) : Hub<IBlackjackClient>, IBlackjackServer
+internal sealed class GameSessionHub(IGameRoomService room) : Hub<IBlackjackClient>, IBlackjackServer
 {
     public const string Endpoint = "/blackjack";
 
@@ -16,7 +16,7 @@ internal sealed class GameSessionHub(GameRoomService room) : Hub<IBlackjackClien
     {
         try
         {
-            GameCommandResult result = await room.DisconnectAsync(Context.ConnectionId);
+            GameOperationResult result = await room.DisconnectAsync(Context.ConnectionId);
             await BroadcastResultAsync(result);
         }
         catch (GameRoomException)
@@ -42,11 +42,11 @@ internal sealed class GameSessionHub(GameRoomService room) : Hub<IBlackjackClien
     public Task Stand() =>
         ExecuteAsync(() => room.StandAsync(Context.ConnectionId));
 
-    private async Task ExecuteAsync(Func<Task<GameCommandResult>> action)
+    private async Task ExecuteAsync(Func<Task<GameOperationResult>> action)
     {
         try
         {
-            GameCommandResult result = await action();
+            GameOperationResult result = await action();
             await BroadcastResultAsync(result);
         }
         catch (GameRoomException ex)
@@ -55,14 +55,14 @@ internal sealed class GameSessionHub(GameRoomService room) : Hub<IBlackjackClien
         }
     }
 
-    private async Task BroadcastResultAsync(GameCommandResult result)
+    private async Task BroadcastResultAsync(GameOperationResult result)
     {
-        if (!string.IsNullOrEmpty(result.BroadcastErrorCode))
+        if (result.Notice is not null)
         {
-            await Clients.All.Error(result.BroadcastErrorCode, result.BroadcastErrorMessage ?? string.Empty);
+            await Clients.All.Error(result.Notice.Code, result.Notice.Message);
         }
 
-        if (result.ShouldBroadcastState)
+        if (result.ShouldPublishState)
         {
             await Clients.All.StateChanged(result.State);
         }
