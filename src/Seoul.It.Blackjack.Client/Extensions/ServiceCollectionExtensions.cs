@@ -24,7 +24,7 @@ public static class ServiceCollectionExtensions
         configure(options);
 
         services.AddSingleton(options);
-        services.AddSingleton<BlackjackClient>();
+        services.AddScoped<BlackjackClient>();
         return services;
     }
 }
