@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Seoul.It.Blackjack.Backend\Seoul.It.Blackjack.Backend.csproj" />
+    <ProjectReference Include="..\Seoul.It.Blackjack.Client\Seoul.It.Blackjack.Client.csproj" />
   </ItemGroup>
 
 </Project>

@@ -235,9 +235,11 @@
 - SignalR 연결/재연결 관리(복구는 미지원)
 - 서버 메서드 호출 API 제공
 - 서버 이벤트를 로컬 이벤트로 전달
+- DI 등록 진입점 제공(`AddBlackjackClient`)
 
 #### 6.2.3 API
 - `ConnectAsync(string url)`
+- `ConnectAsync(string url, Func<HttpMessageHandler> createMessageHandler)` (테스트 인프라에서만 사용)
 - `JoinAsync(string name, string? dealerKey = null)`
 - `LeaveAsync()`
 - `StartRoundAsync()`
@@ -247,6 +249,12 @@
 #### 6.2.4 이벤트
 - `StateChanged(GameState state)`
 - `Error(string code, string message)`
+
+#### 6.2.5 DI 등록 정책
+- `IServiceCollection AddBlackjackClient(Action<BlackjackClientOptions> configure)`를 제공한다.
+- `BlackjackClientOptions`는 `HubUrl`을 가진다.
+- `BlackjackClient`는 `Singleton`으로 등록한다.
+- 연결은 자동으로 시작하지 않는다. 호출자가 `ConnectAsync(...)`를 명시적으로 호출해야 한다.
 
 ### 6.3 Frontend 설계
 

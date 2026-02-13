@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.SignalR.Client;
 using Seoul.It.Blackjack.Core.Contracts;
 using System;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Seoul.It.Blackjack.Client;
@@ -15,14 +16,27 @@ public sealed class BlackjackClient : IAsyncDisposable, IBlackjackClient
 
     public async Task ConnectAsync(string url)
     {
+        await ConnectAsync(url, null);
+    }
+
+    public async Task ConnectAsync(string url, Func<HttpMessageHandler>? createMessageHandler)
+    {
         if (_connection is not null)
         {
             return;
         }
 
-        _connection = new HubConnectionBuilder()
-            .WithUrl(url)
-            .Build();
+        IHubConnectionBuilder builder = new HubConnectionBuilder();
+        if (createMessageHandler is null)
+        {
+            builder = builder.WithUrl(url);
+        }
+        else
+        {
+            builder = builder.WithUrl(url, options => options.HttpMessageHandlerFactory = _ => createMessageHandler());
+        }
+
+        _connection = builder.Build();
 
         _connection.On<GameState>(nameof(IBlackjackClient.OnStateChanged), OnStateChanged);
         _connection.On<string, string>(nameof(IBlackjackClient.OnError), OnError);

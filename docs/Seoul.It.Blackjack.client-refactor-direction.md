@@ -134,6 +134,20 @@
 1. `docs/Seoul.It.Blackjack.design.md` 계약 섹션 메서드명 동기화
 2. 필요 시 `teaching-simplification-proposal.md` 용어 동기화
 
+## 6.6 Client DI 확장
+1. 신규 `BlackjackClientOptions` 추가
+   - 경로: `src/Seoul.It.Blackjack.Client/Options/BlackjackClientOptions.cs`
+   - 속성: `HubUrl`
+2. 신규 `AddBlackjackClient` 확장 추가
+   - 경로: `src/Seoul.It.Blackjack.Client/Extensions/ServiceCollectionExtensions.cs`
+   - 시그니처: `AddBlackjackClient(Action<BlackjackClientOptions>)`
+3. 등록 정책
+   - `BlackjackClient`는 `Singleton`
+   - 자동 연결하지 않고 호출자가 `ConnectAsync`를 명시 호출
+4. 통합 검증
+   - 경로: `src/Seoul.It.Blackjack.Backend.Tests/ClientDiIntegrationTests.cs`
+   - 검증: DI 등록/옵션 반영/Singleton/실제 Hub 연결 및 상태 수신
+
 ---
 
 ## 7. 구현 묶음 계획 (300줄 제한 준수)
@@ -194,6 +208,7 @@
 3. `BlackjackClient`는 `IBlackjackClient`를 직접 구현
 4. SignalR 문자열 리터럴이 계약 메서드명 영역에서 제거됨
 5. 수업 설명 시 "계약 이름 = 실제 호출 이름"이 성립함
+6. `AddBlackjackClient`로 DI 등록 가능하고 `Singleton` 정책이 보장됨
 
 ---
 
