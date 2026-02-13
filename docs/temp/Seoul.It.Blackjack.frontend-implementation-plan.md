@@ -264,7 +264,7 @@ public static class CardExtensions
 ### 묶음 A (문서 정합화, 예상 180줄)
 대상:
 - `docs/Seoul.It.Blackjack.design.md`
-- `docs/Seoul.It.Blackjack.frontend-implementation-plan.md` (본 문서)
+- `docs/temp/Seoul.It.Blackjack.frontend-implementation-plan.md` (본 문서)
 
 작업:
 1. Frontend 기술 선택과 카드 ZIP 배치 정책 확정 문구 반영
