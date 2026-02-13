@@ -5,14 +5,22 @@
     <LangVersion>latest</LangVersion>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="bunit" Version="2.5.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.18" />
     <PackageReference Include="MSTest" Version="4.0.1" />
   </ItemGroup>
 
   <ItemGroup>
     <Using Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Seoul.It.Blackjack.Frontend\Seoul.It.Blackjack.Frontend.csproj" />
+    <ProjectReference Include="..\Seoul.It.Blackjack.Core\Seoul.It.Blackjack.Core.csproj" />
   </ItemGroup>
 
 </Project>
