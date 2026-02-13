@@ -42,7 +42,7 @@ internal sealed class RoundEngine : IRoundEngine
         {
             Phase = GamePhase.InRound,
             CurrentTurnPlayerId = currentTurnPlayerId,
-            StatusMessage = "?쇱슫?쒓? ?쒖옉?섏뿀?듬땲??",
+            StatusMessage = "라운드가 시작되었습니다.",
             Shoe = shoe,
         };
 
@@ -84,7 +84,7 @@ internal sealed class RoundEngine : IRoundEngine
         {
             Phase = GamePhase.InRound,
             CurrentTurnPlayerId = nextTurnPlayerId,
-            StatusMessage = $"{player.Name} ?섏씠 Hit ?덉뒿?덈떎.",
+            StatusMessage = $"{player.Name} 님이 Hit 했습니다.",
         };
 
         if (HasPlayableNonDealer(players))
@@ -115,7 +115,7 @@ internal sealed class RoundEngine : IRoundEngine
         {
             Phase = GamePhase.InRound,
             CurrentTurnPlayerId = nextTurnPlayerId,
-            StatusMessage = $"{player.Name} ?섏씠 Stand ?덉뒿?덈떎.",
+            StatusMessage = $"{player.Name} 님이 Stand 했습니다.",
         };
 
         if (HasPlayableNonDealer(players))
@@ -181,7 +181,7 @@ internal sealed class RoundEngine : IRoundEngine
         {
             Phase = GamePhase.Idle,
             CurrentTurnPlayerId = string.Empty,
-            StatusMessage = "?쇱슫?쒓? 醫낅즺?섏뿀?듬땲??",
+            StatusMessage = "라운드가 종료되었습니다.",
         };
     }
 
@@ -220,7 +220,7 @@ internal sealed class RoundEngine : IRoundEngine
         PlayerState? dealer = players.SingleOrDefault(player => player.IsDealer);
         if (dealer is null)
         {
-            throw new GameAuthorizationException("NOT_DEALER", "?쒕윭媛 議댁옱?섏? ?딆뒿?덈떎.");
+            throw new GameAuthorizationException("NOT_DEALER", "딜러가 존재하지 않습니다.");
         }
 
         return dealer;
@@ -235,7 +235,7 @@ internal sealed class RoundEngine : IRoundEngine
     {
         if (!TryDrawCardTo(player, shoe))
         {
-            throw new GameRuleException("SHOE_EMPTY", "移대뱶媛 遺議깊빐 ?쇱슫?쒕? 醫낅즺?⑸땲??");
+            throw new GameRuleException("SHOE_EMPTY", "카드가 부족해 라운드를 종료합니다.");
         }
     }
 
@@ -288,8 +288,8 @@ internal sealed class RoundEngine : IRoundEngine
         {
             Phase = GamePhase.Idle,
             CurrentTurnPlayerId = string.Empty,
-            StatusMessage = "移대뱶媛 遺議깊빐 ?쇱슫?쒕? 醫낅즺?덉뒿?덈떎.",
-            Notice = new GameNotice("SHOE_EMPTY", "移대뱶媛 遺議깊빐 ?쇱슫?쒕? 醫낅즺?덉뒿?덈떎."),
+            StatusMessage = "카드가 부족해 라운드를 종료했습니다.",
+            Notice = new GameNotice("SHOE_EMPTY", "카드가 부족해 라운드를 종료했습니다."),
         };
     }
 }

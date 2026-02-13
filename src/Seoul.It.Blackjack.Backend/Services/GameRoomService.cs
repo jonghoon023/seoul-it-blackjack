@@ -190,12 +190,12 @@ internal sealed class GameRoomService : IGameRoomService
     {
         if (_phase != GamePhase.Idle)
         {
-            throw new GameRuleException("GAME_IN_PROGRESS", "寃뚯엫??吏꾪뻾 以묒씠??李멸??????놁뒿?덈떎.");
+            throw new GameRuleException("GAME_IN_PROGRESS", "게임이 진행 중이라 참가할 수 없습니다.");
         }
 
         if (_connections.ContainsConnection(command.ConnectionId))
         {
-            throw new GameValidationException("ALREADY_JOINED", "?대? 李멸????곌껐?낅땲??");
+            throw new GameValidationException("ALREADY_JOINED", "이미 참가한 연결입니다.");
         }
 
         string normalizedName = _validator.NormalizeName(
@@ -206,7 +206,7 @@ internal sealed class GameRoomService : IGameRoomService
         bool hasDealer = _players.Any(player => player.IsDealer);
         if (requestedDealer && hasDealer)
         {
-            throw new GameRuleException("DEALER_ALREADY_EXISTS", "?대? ?쒕윭媛 議댁옱?⑸땲??");
+            throw new GameRuleException("DEALER_ALREADY_EXISTS", "이미 딜러가 존재합니다.");
         }
 
         PlayerState player = new()
@@ -225,7 +225,7 @@ internal sealed class GameRoomService : IGameRoomService
             _dealerPlayerId = player.PlayerId;
         }
 
-        _statusMessage = player.IsDealer ? "?쒕윭媛 李멸??덉뒿?덈떎." : "?뚮젅?댁뼱媛 李멸??덉뒿?덈떎.";
+        _statusMessage = player.IsDealer ? "딜러가 참가했습니다." : "플레이어가 참가했습니다.";
         return CreateResult();
     }
 
@@ -254,8 +254,8 @@ internal sealed class GameRoomService : IGameRoomService
             _players.Clear();
             _connections.Clear();
             ResetToIdle(clearDealer: true, clearCurrentTurn: true);
-            _statusMessage = "?쒕윭 ?댁옣?쇰줈 寃뚯엫??醫낅즺?섏뿀?듬땲??";
-            return CreateResult(new GameNotice("GAME_TERMINATED", "?쒕윭媛 ?댁옣?섏뿬 寃뚯엫??醫낅즺?섏뿀?듬땲??"));
+            _statusMessage = "딜러 퇴장으로 게임이 종료되었습니다.";
+            return CreateResult(new GameNotice("GAME_TERMINATED", "딜러가 퇴장하여 게임이 종료되었습니다."));
         }
 
         if (_phase == GamePhase.InRound && _currentTurnPlayerId == leavingPlayer.PlayerId)
@@ -266,7 +266,7 @@ internal sealed class GameRoomService : IGameRoomService
         if (_phase == GamePhase.InRound && CountNonDealerPlayers() == 0)
         {
             ResetToIdle(clearDealer: false, clearCurrentTurn: true);
-            _statusMessage = "?뚮젅?댁뼱媛 ?놁뼱 ?쇱슫?쒕? 醫낅즺?덉뒿?덈떎.";
+            _statusMessage = "플레이어가 없어 라운드를 종료했습니다.";
             return CreateResult();
         }
 
@@ -285,7 +285,7 @@ internal sealed class GameRoomService : IGameRoomService
             return CreateResult(resolution.Notice);
         }
 
-        _statusMessage = isDisconnect ? "?뚮젅?댁뼱 ?곌껐???딆뼱議뚯뒿?덈떎." : "?뚮젅?댁뼱媛 ?댁옣?덉뒿?덈떎.";
+        _statusMessage = isDisconnect ? "플레이어 연결이 끊어졌습니다." : "플레이어가 퇴장했습니다.";
 
         return CreateResult();
     }

@@ -39,7 +39,7 @@ internal sealed class Shoe
     {
         return TryDraw(out Card card)
             ? card
-            : throw new InvalidOperationException("Shoe ??移대뱶媛 ???댁긽 ?놁뒿?덈떎.");
+            : throw new InvalidOperationException("Shoe에 카드가 더 이상 없습니다.");
     }
 
     /// <summary>

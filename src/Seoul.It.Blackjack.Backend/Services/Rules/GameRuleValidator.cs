@@ -22,7 +22,7 @@ internal sealed class GameRuleValidator : IGameRuleValidator
         string normalized = (name ?? string.Empty).Trim();
         if (normalized.Length < minNameLength || normalized.Length > maxNameLength)
         {
-            throw new GameValidationException("INVALID_NAME", "?대쫫? 1~20?먯뿬???⑸땲??");
+            throw new GameValidationException("INVALID_NAME", "이름은 1~20자여야 합니다.");
         }
 
         return normalized;
@@ -37,7 +37,7 @@ internal sealed class GameRuleValidator : IGameRuleValidator
     {
         if (!connections.ContainsConnection(connectionId))
         {
-            throw new GameValidationException("NOT_JOINED", "癒쇱? 李멸??댁빞 ?⑸땲??");
+            throw new GameValidationException("NOT_JOINED", "먼저 참가해야 합니다.");
         }
     }
 
@@ -61,17 +61,17 @@ internal sealed class GameRuleValidator : IGameRuleValidator
         EnsureJoined(connections, connectionId);
         if (phase != GamePhase.Idle)
         {
-            throw new GameRuleException("GAME_IN_PROGRESS", "?대? 寃뚯엫??吏꾪뻾 以묒엯?덈떎.");
+            throw new GameRuleException("GAME_IN_PROGRESS", "이미 게임이 진행 중입니다.");
         }
 
         if (string.IsNullOrEmpty(dealerPlayerId) || dealerPlayerId != connectionId)
         {
-            throw new GameAuthorizationException("NOT_DEALER", "?쒕윭留??쇱슫?쒕? ?쒖옉?????덉뒿?덈떎.");
+            throw new GameAuthorizationException("NOT_DEALER", "딜러만 라운드를 시작할 수 있습니다.");
         }
 
         if (playerCount < minPlayersToStart)
         {
-            throw new GameRuleException("INSUFFICIENT_PLAYERS", "?쇱슫?쒕? ?쒖옉?섎젮硫?理쒖냼 2紐낆씠 ?꾩슂?⑸땲??");
+            throw new GameRuleException("INSUFFICIENT_PLAYERS", "라운드를 시작하려면 최소 2명이 필요합니다.");
         }
     }
 
@@ -86,7 +86,7 @@ internal sealed class GameRuleValidator : IGameRuleValidator
         PlayerState? player = players.SingleOrDefault(value => value.PlayerId == playerId);
         if (player is null)
         {
-            throw new GameValidationException("NOT_JOINED", "癒쇱? 李멸??댁빞 ?⑸땲??");
+            throw new GameValidationException("NOT_JOINED", "먼저 참가해야 합니다.");
         }
 
         return player;
@@ -102,7 +102,7 @@ internal sealed class GameRuleValidator : IGameRuleValidator
         PlayerState? dealer = players.SingleOrDefault(player => player.IsDealer);
         if (dealer is null)
         {
-            throw new GameAuthorizationException("NOT_DEALER", "?쒕윭媛 議댁옱?섏? ?딆뒿?덈떎.");
+            throw new GameAuthorizationException("NOT_DEALER", "딜러가 존재하지 않습니다.");
         }
 
         return dealer;
@@ -127,23 +127,23 @@ internal sealed class GameRuleValidator : IGameRuleValidator
         EnsureJoined(connections, connectionId);
         if (phase != GamePhase.InRound)
         {
-            throw new GameRuleException("GAME_NOT_INROUND", "寃뚯엫??吏꾪뻾 以묒씠 ?꾨떃?덈떎.");
+            throw new GameRuleException("GAME_NOT_INROUND", "게임이 진행 중이 아닙니다.");
         }
 
         PlayerState player = FindPlayer(players, connectionId);
         if (player.IsDealer)
         {
-            throw new GameRuleException("DEALER_IS_AUTO", "?쒕윭???먮룞?쇰줈 吏꾪뻾?⑸땲??");
+            throw new GameRuleException("DEALER_IS_AUTO", "딜러는 자동으로 진행됩니다.");
         }
 
         if (currentTurnPlayerId != player.PlayerId)
         {
-            throw new GameRuleException("NOT_YOUR_TURN", "?꾩옱 ?댁쓽 ?뚮젅?댁뼱媛 ?꾨떃?덈떎.");
+            throw new GameRuleException("NOT_YOUR_TURN", "현재 당신의 턴이 아닙니다.");
         }
 
         if (player.TurnState != PlayerTurnState.Playing)
         {
-            throw new GameRuleException("ALREADY_DONE", "?대? ?됰룞???앸궃 ?뚮젅?댁뼱?낅땲??");
+            throw new GameRuleException("ALREADY_DONE", "이미 행동이 끝난 플레이어입니다.");
         }
 
         return player;

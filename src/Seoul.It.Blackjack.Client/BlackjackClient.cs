@@ -155,6 +155,6 @@ public sealed class BlackjackClient : IAsyncDisposable, IBlackjackClient
     /// <returns>사용 가능한 허브 연결 객체입니다.</returns>
     private HubConnection EnsureConnection()
     {
-        return _connection ?? throw new InvalidOperationException("癒쇱? ConnectAsync瑜??몄텧?댁빞 ?⑸땲??");
+        return _connection ?? throw new InvalidOperationException("먼저 ConnectAsync를 호출해야 합니다.");
     }
 }
