@@ -81,9 +81,9 @@ public class DealerTerminationTests
 
         List<(string Type, string? Code)> events = player.Events.Skip(eventBefore).ToList();
         Assert.AreEqual(2, events.Count);
-        Assert.AreEqual("Error", events[0].Type);
+        Assert.AreEqual(nameof(IBlackjackClient.OnError), events[0].Type);
         Assert.AreEqual("GAME_TERMINATED", events[0].Code);
-        Assert.AreEqual("StateChanged", events[1].Type);
+        Assert.AreEqual(nameof(IBlackjackClient.OnStateChanged), events[1].Type);
     }
 
     [TestMethod]

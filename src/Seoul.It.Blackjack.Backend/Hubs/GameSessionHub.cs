@@ -51,7 +51,7 @@ internal sealed class GameSessionHub(IGameRoomService room) : Hub<IBlackjackClie
         }
         catch (GameRoomException ex)
         {
-            await Clients.Caller.Error(ex.Code, ex.Message);
+            await Clients.Caller.OnError(ex.Code, ex.Message);
         }
     }
 
@@ -59,12 +59,12 @@ internal sealed class GameSessionHub(IGameRoomService room) : Hub<IBlackjackClie
     {
         if (result.Notice is not null)
         {
-            await Clients.All.Error(result.Notice.Code, result.Notice.Message);
+            await Clients.All.OnError(result.Notice.Code, result.Notice.Message);
         }
 
         if (result.ShouldPublishState)
         {
-            await Clients.All.StateChanged(result.State);
+            await Clients.All.OnStateChanged(result.State);
         }
     }
 }

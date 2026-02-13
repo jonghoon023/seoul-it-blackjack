@@ -24,8 +24,8 @@
 - 상태 전송용 DTO를 추가하지 않는다. Core 계약 모델을 그대로 전송한다.
 - Hub는 상태를 직접 변경하지 않는다. 모든 상태 변경은 단일 큐 소비 루프에서만 수행한다.
 - Queue(`Channel`) 기반 직렬 처리 구조는 유지한다. 단, 큐 인프라는 `GameRoomService` 외부 컴포넌트로 분리할 수 있다.
-- 잘못된 요청은 요청자에게만 `Error(code, message)`를 보낸다.
-- 상태가 변경되면 `StateChanged(GameState)`를 전체 브로드캐스트한다.
+- 잘못된 요청은 요청자에게만 `OnError(code, message)`를 보낸다.
+- 상태가 변경되면 `OnStateChanged(GameState)`를 전체 브로드캐스트한다.
 - 특히 `Hit/Stand` 성공 시에는 반드시 `Clients.All`로 상태를 전송한다.
 - Disconnect는 즉시 Leave와 동일하게 처리한다(복구 없음).
 
@@ -75,8 +75,8 @@
   - `Hit()`
   - `Stand()`
 - 클라이언트 수신(`IBlackjackClient`)
-  - `StateChanged(GameState state)`
-  - `Error(string code, string message)`
+  - `OnStateChanged(GameState state)`
+  - `OnError(string code, string message)`
 
 ### 5.3 Backend 설계
 
@@ -137,7 +137,7 @@
 - 결과 계산 후 즉시 Idle로 전환한다.
 - Idle 상태에서는 직전 라운드의 카드/Outcome을 유지하고, 다음 `StartRound`에서 라운드 관련 필드를 초기화한다.
 - 카드 드로우 중 덱이 비면 `SHOE_EMPTY`로 라운드를 종료하고 Idle로 전환한다(자동 재셔플 없음).
-- 모든 상태 변경 결과는 `Clients.All.StateChanged`로 전송한다.
+- 모든 상태 변경 결과는 `Clients.All.OnStateChanged`로 전송한다.
 
 #### 5.3.6 퇴장/끊김 규칙
 - Leave와 Disconnect 동일 처리
@@ -145,8 +145,8 @@
   - 즉시 게임 종료로 처리한다.
   - 접속 중인 플레이어를 전원 강제 퇴장 처리한다.
   - Players 목록과 ConnectionRegistry 매핑을 모두 초기화한다.
-  - 모든 접속자에게 `Error("GAME_TERMINATED", "딜러가 퇴장하여 게임이 종료되었습니다.")`를 1회 전송한다.
-  - 초기화된 상태를 `StateChanged`로 1회 브로드캐스트한다.
+  - 모든 접속자에게 `OnError("GAME_TERMINATED", "딜러가 퇴장하여 게임이 종료되었습니다.")`를 1회 전송한다.
+  - 초기화된 상태를 `OnStateChanged`로 1회 브로드캐스트한다.
   - 게임 상태는 Idle로 리셋되고, 이후 새로 Join해야 게임을 다시 시작할 수 있다.
 - 일반 플레이어 퇴장 시:
   - 목록에서 제거
@@ -178,7 +178,7 @@
 #### 5.3.9 예외 처리 원칙(커스텀 예외)
 - 공통 베이스 커스텀 예외 클래스를 만든다. 예: `GameRoomException(string code, string message)`.
 - 필요 시 목적별 파생 예외를 사용한다. 예: `ValidationException`, `GameRuleException`, `AuthorizationException`.
-- Hub에서는 커스텀 예외의 `code/message`를 읽어 요청자에게 `Error(code, message)`를 전송한다.
+- Hub에서는 커스텀 예외의 `code/message`를 읽어 요청자에게 `OnError(code, message)`를 전송한다.
 - 예상 가능한 규칙 위반은 커스텀 예외로 처리하고, 예기치 못한 시스템 예외와 구분한다.
 
 ### 5.4 1단계 완료 기준

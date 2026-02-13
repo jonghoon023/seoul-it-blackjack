@@ -4,7 +4,7 @@ namespace Seoul.It.Blackjack.Core.Contracts;
 
 public interface IBlackjackClient
 {
-    Task StateChanged(GameState state);
+    Task OnStateChanged(GameState state);
 
-    Task Error(string code, string message);
+    Task OnError(string code, string message);
 }

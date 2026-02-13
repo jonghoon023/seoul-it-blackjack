@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Seoul.It.Blackjack.Client;
 
-public sealed class BlackjackClient : IAsyncDisposable
+public sealed class BlackjackClient : IAsyncDisposable, IBlackjackClient
 {
     private HubConnection? _connection;
 
@@ -24,34 +24,46 @@ public sealed class BlackjackClient : IAsyncDisposable
             .WithUrl(url)
             .Build();
 
-        _connection.On<GameState>("StateChanged", state => StateChanged?.Invoke(state));
-        _connection.On<string, string>("Error", (code, message) => Error?.Invoke(code, message));
+        _connection.On<GameState>(nameof(IBlackjackClient.OnStateChanged), OnStateChanged);
+        _connection.On<string, string>(nameof(IBlackjackClient.OnError), OnError);
         await _connection.StartAsync();
     }
 
     public Task JoinAsync(string name, string? dealerKey = null)
     {
-        return EnsureConnection().InvokeAsync("Join", name, dealerKey);
+        return EnsureConnection().InvokeAsync(nameof(IBlackjackServer.Join), name, dealerKey);
     }
 
     public Task LeaveAsync()
     {
-        return EnsureConnection().InvokeAsync("Leave");
+        return EnsureConnection().InvokeAsync(nameof(IBlackjackServer.Leave));
     }
 
     public Task StartRoundAsync()
     {
-        return EnsureConnection().InvokeAsync("StartRound");
+        return EnsureConnection().InvokeAsync(nameof(IBlackjackServer.StartRound));
     }
 
     public Task HitAsync()
     {
-        return EnsureConnection().InvokeAsync("Hit");
+        return EnsureConnection().InvokeAsync(nameof(IBlackjackServer.Hit));
     }
 
     public Task StandAsync()
     {
-        return EnsureConnection().InvokeAsync("Stand");
+        return EnsureConnection().InvokeAsync(nameof(IBlackjackServer.Stand));
+    }
+
+    public Task OnStateChanged(GameState state)
+    {
+        StateChanged?.Invoke(state);
+        return Task.CompletedTask;
+    }
+
+    public Task OnError(string code, string message)
+    {
+        Error?.Invoke(code, message);
+        return Task.CompletedTask;
     }
 
     public async ValueTask DisposeAsync()

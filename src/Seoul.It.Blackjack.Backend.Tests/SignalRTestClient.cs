@@ -20,14 +20,14 @@ internal sealed class SignalRTestClient : IAsyncDisposable
                 options => options.HttpMessageHandlerFactory = _ => factory.Server.CreateHandler())
             .Build();
 
-        _connection.On<GameState>("StateChanged", state =>
+        _connection.On<GameState>(nameof(IBlackjackClient.OnStateChanged), state =>
         {
-            Events.Add(("StateChanged", null));
+            Events.Add((nameof(IBlackjackClient.OnStateChanged), null));
             States.Add(state);
         });
-        _connection.On<string, string>("Error", (code, message) =>
+        _connection.On<string, string>(nameof(IBlackjackClient.OnError), (code, message) =>
         {
-            Events.Add(("Error", code));
+            Events.Add((nameof(IBlackjackClient.OnError), code));
             Errors.Add((code, message));
         });
     }
@@ -40,15 +40,15 @@ internal sealed class SignalRTestClient : IAsyncDisposable
 
     public Task ConnectAsync() => _connection.StartAsync();
 
-    public Task JoinAsync(string name, string? dealerKey = null) => _connection.InvokeAsync("Join", name, dealerKey);
+    public Task JoinAsync(string name, string? dealerKey = null) => _connection.InvokeAsync(nameof(IBlackjackServer.Join), name, dealerKey);
 
-    public Task LeaveAsync() => _connection.InvokeAsync("Leave");
+    public Task LeaveAsync() => _connection.InvokeAsync(nameof(IBlackjackServer.Leave));
 
-    public Task StartRoundAsync() => _connection.InvokeAsync("StartRound");
+    public Task StartRoundAsync() => _connection.InvokeAsync(nameof(IBlackjackServer.StartRound));
 
-    public Task HitAsync() => _connection.InvokeAsync("Hit");
+    public Task HitAsync() => _connection.InvokeAsync(nameof(IBlackjackServer.Hit));
 
-    public Task StandAsync() => _connection.InvokeAsync("Stand");
+    public Task StandAsync() => _connection.InvokeAsync(nameof(IBlackjackServer.Stand));
 
     public ValueTask DisposeAsync() => _connection.DisposeAsync();
 }
