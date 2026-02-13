@@ -1,6 +1,6 @@
+using System;
 using Microsoft.Extensions.DependencyInjection;
 using Seoul.It.Blackjack.Client.Options;
-using System;
 
 namespace Seoul.It.Blackjack.Client.Extensions;
 

@@ -1,8 +1,8 @@
-using Microsoft.AspNetCore.SignalR.Client;
-using Seoul.It.Blackjack.Core.Contracts;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.SignalR.Client;
+using Seoul.It.Blackjack.Core.Contracts;
 
 namespace Seoul.It.Blackjack.Client;
 
