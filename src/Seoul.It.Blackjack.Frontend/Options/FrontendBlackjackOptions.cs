@@ -1,4 +1,4 @@
-namespace Seoul.It.Blackjack.Frontend.Options;
+﻿namespace Seoul.It.Blackjack.Frontend.Options;
 
 /// <summary>
 /// 프론트엔드에서 블랙잭 클라이언트 연결에 쓰는 옵션입니다.

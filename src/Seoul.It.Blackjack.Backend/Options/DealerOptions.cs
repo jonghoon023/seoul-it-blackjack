@@ -1,4 +1,4 @@
-namespace Seoul.It.Blackjack.Backend.Options;
+﻿namespace Seoul.It.Blackjack.Backend.Options;
 
 /// <summary>
 /// 딜러 입장 규칙에 필요한 설정 값을 담습니다.

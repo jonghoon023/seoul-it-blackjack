@@ -1,4 +1,4 @@
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace Seoul.It.Blackjack.Core.Contracts;
 

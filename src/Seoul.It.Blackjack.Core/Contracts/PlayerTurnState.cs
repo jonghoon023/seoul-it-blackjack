@@ -1,4 +1,4 @@
-namespace Seoul.It.Blackjack.Core.Contracts;
+﻿namespace Seoul.It.Blackjack.Core.Contracts;
 
 /// <summary>
 /// 플레이어가 이번 라운드에서 어떤 턴 상태인지 나타냅니다.

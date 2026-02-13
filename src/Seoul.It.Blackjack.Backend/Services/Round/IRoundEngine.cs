@@ -1,4 +1,4 @@
-using Seoul.It.Blackjack.Backend.Models;
+﻿using Seoul.It.Blackjack.Backend.Models;
 using Seoul.It.Blackjack.Core.Contracts;
 using System.Collections.Generic;
 

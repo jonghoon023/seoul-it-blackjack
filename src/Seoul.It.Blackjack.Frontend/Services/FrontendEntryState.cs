@@ -1,4 +1,4 @@
-namespace Seoul.It.Blackjack.Frontend.Services;
+﻿namespace Seoul.It.Blackjack.Frontend.Services;
 
 /// <summary>
 /// Entry 페이지에서 입력한 값을 Table 페이지로 전달하기 위한 상태 객체입니다.

@@ -1,4 +1,4 @@
-using Seoul.It.Blackjack.Core.Contracts;
+﻿using Seoul.It.Blackjack.Core.Contracts;
 using System.Collections.Generic;
 
 namespace Seoul.It.Blackjack.Backend.Services.State;

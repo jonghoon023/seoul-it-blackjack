@@ -1,4 +1,4 @@
-namespace Seoul.It.Blackjack.Core.Contracts;
+﻿namespace Seoul.It.Blackjack.Core.Contracts;
 
 /// <summary>
 /// 게임이 지금 어느 단계에 있는지 나타냅니다.

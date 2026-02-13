@@ -1,4 +1,4 @@
-using Seoul.It.Blackjack.Core.Contracts;
+﻿using Seoul.It.Blackjack.Core.Contracts;
 using System;
 using System.Threading.Tasks;
 

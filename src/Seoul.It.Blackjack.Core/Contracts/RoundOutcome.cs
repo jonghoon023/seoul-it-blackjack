@@ -1,4 +1,4 @@
-namespace Seoul.It.Blackjack.Core.Contracts;
+﻿namespace Seoul.It.Blackjack.Core.Contracts;
 
 /// <summary>
 /// 라운드가 끝났을 때 플레이어의 결과를 나타냅니다.

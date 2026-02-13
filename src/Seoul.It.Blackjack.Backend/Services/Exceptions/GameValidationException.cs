@@ -1,4 +1,4 @@
-namespace Seoul.It.Blackjack.Backend.Services.Exceptions;
+﻿namespace Seoul.It.Blackjack.Backend.Services.Exceptions;
 
 /// <summary>
 /// 입력값이 올바르지 않을 때 사용하는 예외입니다.

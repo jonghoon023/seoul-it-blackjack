@@ -1,4 +1,4 @@
-namespace Seoul.It.Blackjack.Core.Domain;
+﻿namespace Seoul.It.Blackjack.Core.Domain;
 
 /// <summary>
 /// 카드 한 장을 나타내는 클래스입니다.

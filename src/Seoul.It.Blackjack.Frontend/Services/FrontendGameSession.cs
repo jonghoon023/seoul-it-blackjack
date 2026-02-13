@@ -1,4 +1,4 @@
-using Seoul.It.Blackjack.Client;
+﻿using Seoul.It.Blackjack.Client;
 using Seoul.It.Blackjack.Client.Options;
 using Seoul.It.Blackjack.Core.Contracts;
 using System;

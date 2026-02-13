@@ -1,4 +1,4 @@
-namespace Seoul.It.Blackjack.Core.Domain;
+﻿namespace Seoul.It.Blackjack.Core.Domain;
 
 /// <summary>
 /// 카드의 무늬 종류를 나타냅니다.

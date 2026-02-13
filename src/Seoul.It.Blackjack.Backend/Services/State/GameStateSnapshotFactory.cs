@@ -1,4 +1,4 @@
-using Seoul.It.Blackjack.Core.Contracts;
+﻿using Seoul.It.Blackjack.Core.Contracts;
 using Seoul.It.Blackjack.Core.Domain;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,4 +1,4 @@
-namespace Seoul.It.Blackjack.Backend.Options;
+﻿namespace Seoul.It.Blackjack.Backend.Options;
 
 /// <summary>
 /// 게임 규칙에 필요한 숫자 설정을 모아둔 옵션입니다.

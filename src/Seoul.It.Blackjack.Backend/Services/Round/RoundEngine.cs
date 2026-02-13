@@ -1,4 +1,4 @@
-using Seoul.It.Blackjack.Backend.Models;
+﻿using Seoul.It.Blackjack.Backend.Models;
 using Seoul.It.Blackjack.Backend.Services.Commands;
 using Seoul.It.Blackjack.Backend.Services.Exceptions;
 using Seoul.It.Blackjack.Core.Contracts;

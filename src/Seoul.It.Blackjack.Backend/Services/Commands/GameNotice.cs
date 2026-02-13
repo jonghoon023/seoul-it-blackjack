@@ -1,4 +1,4 @@
-namespace Seoul.It.Blackjack.Backend.Services.Commands;
+﻿namespace Seoul.It.Blackjack.Backend.Services.Commands;
 
 /// <summary>
 /// 모든 사용자에게 함께 알릴 공지 메시지 데이터입니다.

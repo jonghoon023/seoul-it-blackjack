@@ -1,4 +1,4 @@
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Seoul.It.Blackjack.Client.Extensions;
 using Seoul.It.Blackjack.Frontend.Options;

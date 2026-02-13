@@ -1,4 +1,4 @@
-namespace Seoul.It.Blackjack.Backend.Services.Exceptions;
+﻿namespace Seoul.It.Blackjack.Backend.Services.Exceptions;
 
 /// <summary>
 /// 권한이 없는 요청이 들어왔을 때 사용하는 예외입니다.

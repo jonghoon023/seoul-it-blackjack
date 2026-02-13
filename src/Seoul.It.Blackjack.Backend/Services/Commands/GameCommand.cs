@@ -1,4 +1,4 @@
-namespace Seoul.It.Blackjack.Backend.Services.Commands;
+﻿namespace Seoul.It.Blackjack.Backend.Services.Commands;
 
 /// <summary>
 /// 큐에 넣어 직렬 처리할 게임 명령 데이터입니다.
